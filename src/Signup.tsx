@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+const API_URL = import.meta.env.VITE_API_URL;
 // ============================================================================
 // 1. INTERFACES (Data Types matching DB & Validation)
 // ============================================================================
@@ -146,8 +147,8 @@ export default function Signup() {
       // BACKEND API CALL:
       // When your backend route is ready, this will save data in DB users table.
       // ----------------------------------------------------------------------
-      const url = "http://localhost:2004/signup/signupUser";
-      const resp = await axios.post(url, payload,{ headers: { "Content-Type": "application/x-www-form-urlencoded" } });
+      // const url = "http://localhost:2004/signup/signupUser";
+      const resp = await axios.post(`${API_URL}/signup/signupUser`, payload,{ headers: { "Content-Type": "application/x-www-form-urlencoded" } });
 
       if (resp.data.status === true) {
         // 1. Store emailid in localStorage
