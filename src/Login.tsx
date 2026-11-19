@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-
+const API_URL = import.meta.env.VITE_API_URL;
 // ============================================================================
 // 1. DATA INTERFACES
 // ============================================================================
@@ -132,14 +132,14 @@ export default function Login() {
       setLoading(true);
       setErrors({});
 
-      const url = 'http://localhost:2004/login/loginUser';
+      // const url = 'http://localhost:2004/login/loginUser';
       const cleanEmail = obj.emailid.trim().toLowerCase();
       const payload = {
         emailid: cleanEmail,
         password: obj.password,
       };
 
-      const resp = await axios.post(url, payload);
+      const resp = await axios.post(`${API_URL}/login/loginUser`, payload);
 
       if (resp.data.status === true) {
         const receivedUser: LoggedInUser = {
@@ -192,7 +192,7 @@ export default function Login() {
       setLoading(true);
       setForgotMessage(null);
 
-      const resp = await axios.post('http://localhost:2004/login/forgot-password', {
+      const resp = await axios.post(`${API_URL}/login/forgot-password`, {
         emailid: targetEmail.trim().toLowerCase(),
       });
 
@@ -232,7 +232,7 @@ export default function Login() {
       setForgotMessage(null);
 
       const targetEmail = (forgotEmail || obj.emailid).trim().toLowerCase();
-      const resp = await axios.post('http://localhost:2004/login/reset-password', {
+      const resp = await axios.post(`${API_URL}/login/reset-password`, {
         emailid: targetEmail,
         otp: otp.trim(),
         newPassword: newPassword,
