@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+const API_URL = import.meta.env.VITE_API_URL;
 // ----------------------------------------------------
 // 1. Interfaces
 // ----------------------------------------------------
@@ -150,14 +150,14 @@ function CitizenRegistration({ userEmail }: CitizenRegistrationProps) {
     setIsAiScanning(true);
     setAiStatusMsg('GenAI is analyzing Aadhaar card image(s) to extract details...');
 
-    const ocrUrl = 'http://localhost:2004/citizen/ocr-aadhaar';
+    // const ocrUrl = 'http://localhost:2004/citizen/ocr-aadhaar';
     const ocrFormData = new FormData();
 
     if (frontFile) ocrFormData.append('frontpic', frontFile);
     if (backFile) ocrFormData.append('backpic', backFile);
 
     try {
-      const resp = await axios.post(ocrUrl, ocrFormData, {
+      const resp = await axios.post(`${API_URL}/citizen/ocr-aadhaar`, ocrFormData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
