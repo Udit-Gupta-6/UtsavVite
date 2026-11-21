@@ -177,19 +177,11 @@ function CitizenRegistration({ userEmail }: CitizenRegistrationProps) {
         setAiStatusMsg(resp.data.msg || 'Aadhaar processed. Verify details below.');
       }
     } catch (error) {
-      console.warn('Backend GenAI offline, fallback simulation:', error);
-      setTimeout(() => {
-        setObj((prev) => ({
-          ...prev,
-          acardno: prev.acardno || '5421 9876 3412',
-          name: prev.name || 'Rahul Sharma',
-          dob: prev.dob || '1996-07-24',
-          gender: prev.gender || 'Male',
-          address: prev.address || 'H.No 45, Golden Temple Road, Green Avenue',
-          city: prev.city || 'Amritsar',
-        }));
-        setAiStatusMsg('GenAI auto-filled: Aadhaar No, Name, DOB, Gender, Address & City ✓');
-      }, 1200);
+      console.error('GenAI OCR Error:', error);
+
+      setAiStatusMsg(
+        'Unable to extract Aadhaar details. Please upload your Aadhaar images again.'
+      );
     } finally {
       setIsAiScanning(false);
     }
@@ -333,7 +325,7 @@ function CitizenRegistration({ userEmail }: CitizenRegistrationProps) {
     let token = localStorage.getItem("token")
     try {
       const resp = await axios.post(url, citizenPayload,
-        {headers:{Authorization:`Bearer ${token}`}}
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       alert('Citizen Data Uploaded Successfully: ' + JSON.stringify(resp.data));
     } catch (error) {
@@ -383,8 +375,8 @@ function CitizenRegistration({ userEmail }: CitizenRegistrationProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 py-10 px-4">
       <div className="max-w-4xl mx-auto bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border-2 border-orange-200 overflow-hidden">
-        
-      
+
+
 
         {/* Sub Header */}
         <div className="text-center py-3 bg-orange-100/60 border-b border-orange-200">
@@ -411,7 +403,7 @@ function CitizenRegistration({ userEmail }: CitizenRegistrationProps) {
                     Locked to Logged-in Citizen (Read-Only)
                   </span>
                 </div>
-                
+
                 <input
                   type="email"
                   name="emailid"
@@ -423,9 +415,8 @@ function CitizenRegistration({ userEmail }: CitizenRegistrationProps) {
 
                 {validations.emailid ? (
                   <span
-                    className={`text-xs font-semibold block mt-1 ${
-                      validations.emailid.isValid ? 'text-green-600' : 'text-red-600'
-                    }`}
+                    className={`text-xs font-semibold block mt-1 ${validations.emailid.isValid ? 'text-green-600' : 'text-red-600'
+                      }`}
                   >
                     {validations.emailid.message}
                   </span>
@@ -454,8 +445,8 @@ function CitizenRegistration({ userEmail }: CitizenRegistrationProps) {
           {/* GenAI Progress / Notification Banner */}
           {(isAiScanning || aiStatusMsg) && (
             <div className={`p-3 rounded-lg border flex items-center gap-2.5 text-xs font-medium transition ${isAiScanning
-                ? 'bg-amber-50 border-amber-300 text-amber-800 animate-pulse'
-                : 'bg-emerald-50 border-emerald-300 text-emerald-800'
+              ? 'bg-amber-50 border-amber-300 text-amber-800 animate-pulse'
+              : 'bg-emerald-50 border-emerald-300 text-emerald-800'
               }`}>
               {isAiScanning ? (
                 <svg className="animate-spin h-4 w-4 text-amber-600" fill="none" viewBox="0 0 24 24">
@@ -670,10 +661,10 @@ function CitizenRegistration({ userEmail }: CitizenRegistrationProps) {
                     onChange={doUpdateObj}
                     placeholder="10-digit mobile number (e.g., 9876543210)"
                     className={`w-full rounded-lg border px-3 py-2 text-sm outline-none transition ${validations.contact
-                        ? validations.contact.isValid
-                          ? 'border-green-500 bg-green-50/20 focus:ring-2 focus:ring-green-400'
-                          : 'border-red-500 bg-red-50/20 focus:ring-2 focus:ring-red-400'
-                        : 'border-orange-300 focus:ring-2 focus:ring-orange-400'
+                      ? validations.contact.isValid
+                        ? 'border-green-500 bg-green-50/20 focus:ring-2 focus:ring-green-400'
+                        : 'border-red-500 bg-red-50/20 focus:ring-2 focus:ring-red-400'
+                      : 'border-orange-300 focus:ring-2 focus:ring-orange-400'
                       }`}
                   />
                   {validations.contact && (
