@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
 
 // ----------------------------------------------------
 // 1. Interfaces
@@ -34,7 +35,7 @@ interface EventServicesProps {
 
 function EventServices({ userEmail }: EventServicesProps) {
   // Backend Base URL
-  const API_BASE = "http://localhost:2004";
+  // const API_BASE = "http://localhost:2004";
 
   // Predefined events
   const eventOptions = [
@@ -86,7 +87,7 @@ function EventServices({ userEmail }: EventServicesProps) {
       setCitizenEmail(activeEmail);
       // 2. Fetch existing wishlist so hearts show RED ❤️ on load
       axios
-        .post(`${API_BASE}/favrs/fetchWishlist`, {
+        .post(`${API_URL}/favrs/fetchWishlist`, {
           citizenEmail: activeEmail.trim(),
         })
         .then((res) => {
@@ -132,8 +133,8 @@ function EventServices({ userEmail }: EventServicesProps) {
 
   async function doFetchCities() {
     try {
-      const url = `${API_BASE}/eventss/eventCityFetch`;
-      const resp = await axios.post(url);
+      // const url = `http://localhost:2004/eventss/eventCityFetch`;
+      const resp = await axios.post(`${API_URL}/eventss/eventCityFetch`);
 
       if (resp.data.status === true && Array.isArray(resp.data.msg)) {
         setCitiesList(resp.data.msg);
@@ -162,8 +163,8 @@ function EventServices({ userEmail }: EventServicesProps) {
 
     setLoadingServices(true);
     try {
-      const url = `${API_BASE}/eventss/eventSerFetch`;
-      const resp = await axios.post(url, {
+      // const url = `http://localhost:2004/eventss/eventSerFetch`;
+      const resp = await axios.post(`${API_URL}/eventss/eventSerFetch`, {
         eventOptions: chosenEvent,
         event: chosenEvent,
       });
@@ -246,14 +247,14 @@ function EventServices({ userEmail }: EventServicesProps) {
     setCurrentPage(1);
 
     try {
-      const url = `${API_BASE}/eventss/eventVendorDetails`;
+      // const url = `http://localhost:2004/eventss/eventVendorDetails`;
       const payload = {
         city: selectedCity,
         services: selectedServices,
       };
 
       let token = localStorage.getItem("token");
-      const resp = await axios.post(url, payload, {
+      const resp = await axios.post(`${API_URL}/eventss/eventVendorDetails`, payload, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -287,13 +288,13 @@ function EventServices({ userEmail }: EventServicesProps) {
     }
 
     try {
-      const url = `${API_BASE}/eventss/eventFavVendor`;
+      // const url = `http://localhost:2004/eventss/eventFavVendor`;
       const payload = {
         citizenEmail: citizenEmail.trim(),
         vendorEmail: vendorEmail.trim(),
       };
 
-      const resp = await axios.post(url, payload);
+      const resp = await axios.post(`${API_URL}/eventss/eventFavVendor`, payload);
 
       if (resp.data.status === true) {
         if (resp.data.action === "saved") {
