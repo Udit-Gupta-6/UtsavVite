@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+const API_URL = import.meta.env.VITE_API_URL;
 
 // ====================================================
 // 1. Interfaces
@@ -104,9 +105,9 @@ function VendorRegistration({ userEmail }: VendorRegistrationProps) {
 
     setIsAutoFetching(true);
     try {
-      const url = 'http://localhost:2004/vendor/fetch-vendor';
+      // const url = 'http://localhost:2004/vendor/fetch-vendor';
       const resp = await axios.post(
-        url,
+        `${API_URL}/vendor/fetch-vendor`,
         { emailid: emailToFetch },
         { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
       );
@@ -283,7 +284,7 @@ function VendorRegistration({ userEmail }: VendorRegistrationProps) {
     }
 
     try {
-      const url = 'http://localhost:2004/vendor/reg-vendor';
+      // const url = 'http://localhost:2004/vendor/reg-vendor';
       const frmData = new FormData();
 
       frmData.append('emailid', obj.emailid);
@@ -303,7 +304,7 @@ function VendorRegistration({ userEmail }: VendorRegistrationProps) {
 
       const token = localStorage.getItem('token');
 
-      const resp = await axios.post(url, frmData, {
+      const resp = await axios.post(`${API_URL}/vendor/reg-vendor`, frmData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,
@@ -329,7 +330,7 @@ function VendorRegistration({ userEmail }: VendorRegistrationProps) {
     }
 
     try {
-      const url = 'http://localhost:2004/vendor/update-vendor';
+      // const url = 'http://localhost:2004/vendor/update-vendor';
       const frmData = new FormData();
 
       frmData.append('emailid', obj.emailid);
@@ -349,7 +350,7 @@ function VendorRegistration({ userEmail }: VendorRegistrationProps) {
 
       const token = localStorage.getItem('token');
 
-      const resp = await axios.post(url, frmData, {
+      const resp = await axios.post(`${API_URL}/vendor/update-vendor`, frmData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,
