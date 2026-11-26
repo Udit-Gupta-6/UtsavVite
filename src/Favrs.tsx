@@ -1,5 +1,6 @@
 import  { useState, useEffect } from "react";
 import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
 
 // ----------------------------------------------------
 // 1. Interfaces
@@ -26,7 +27,7 @@ interface FavrsProps {
 }
 
 export default function Favrs({ userEmail }: FavrsProps) {
-  const API_BASE = "http://localhost:2004";
+  // const API_BASE = "http://localhost:2004";
 
   // ----------------------------------------------------
   // 2. Citizen Email State (from props or localStorage)
@@ -68,7 +69,7 @@ export default function Favrs({ userEmail }: FavrsProps) {
 
     setLoading(true);
     try {
-      const resp = await axios.post(`${API_BASE}/favrs/fetchWishlist`, {
+      const resp = await axios.post(`${API_URL}/favrs/fetchWishlist`, {
         citizenEmail: targetEmail.trim(),
       });
 
@@ -93,7 +94,7 @@ export default function Favrs({ userEmail }: FavrsProps) {
 
     // 2. Remove from DB via backend API
     try {
-      const resp = await axios.post(`${API_BASE}/favrs/removeFavs`, {
+      const resp = await axios.post(`${API_URL}/favrs/removeFavs`, {
         citizenEmail: citizenEmail.trim(),
         vendorEmail: vendorEmail,
       });
